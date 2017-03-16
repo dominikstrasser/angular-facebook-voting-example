@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>FbPolling</title>
@@ -8,7 +9,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
 <body>
   <app-root>Loading...</app-root>
+  <script src="//connect.facebook.net/en_US/all.js"></script>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '1609160909111744', // App ID
+        // channelUrl: 'YOUR_WEBSITE_CHANNEL_URL',
+        status: true, // check login status
+        cookie: true, // enable cookies to allow the server to access the session
+        xfbml: true  // parse XFBML
+      });
+    };
+
+    (function (d) {
+      var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement('script'); js.id = id; js.async = true;
+      js.src = "//connect.facebook.net/en_US/all.js";
+      ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+  </script>
 </body>
+
 </html>

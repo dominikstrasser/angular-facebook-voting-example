@@ -1,3 +1,20 @@
 <h1>
   {{title}}
 </h1>
+<div *ngIf="isLoggedIn">
+  
+  <div class="reactions">
+    <div class="reactions__header">
+      <span *ngFor="let reaction of getReactionsKeys()">{{reaction}}</span>
+    </div>
+    <div class="reactions__numbers">
+      <span *ngFor="let reaction of getReactionsKeys()">{{reactions[reaction]}}</span>
+    </div>
+  </div>
+
+
+</div>
+
+<div *ngIf="!isLoggedIn">
+  <button (click)="login()">login</button>
+</div>
