@@ -5,12 +5,12 @@ declare var FB;
 
 interface REACTION_TYPES {
 
-  LIKE: number,
-  LOVE: number,
-  HAHA: number,
-  WOW: number,
-  SAD: number,
-  ANGRY: number
+  LIKE: number;
+  LOVE: number;
+  HAHA: number;
+  WOW: number;
+  SAD: number;
+  ANGRY: number;
 
 }
 
@@ -26,6 +26,9 @@ export class AppComponent implements OnInit {
   public user;
   public reactions: REACTION_TYPES;
 
+  private currentTime = new Date().getTime();
+  private isFirstCall = true;
+
 
   /**
    *
@@ -35,7 +38,7 @@ export class AppComponent implements OnInit {
   private VARIABLES = {
     USER_ID: '',
     POST_ID: ''
-  }
+  };
 
   constructor(
     private cdRef: ChangeDetectorRef
@@ -93,7 +96,6 @@ export class AppComponent implements OnInit {
     }, { scope: 'email, user_posts' });
   }
 
-
   getUserInfo() {
 
     FB.api('/me', (response) => {
@@ -104,15 +106,27 @@ export class AppComponent implements OnInit {
 
   }
 
+
+
   getReactions() {
     console.log('get reactions');
 
+    let params: any = {
+      summary: 1
+    };
+
+    if (!this.isFirstCall) {
+      params.since = Math.round(this.currentTime / 1000);
+    }
+
     FB.api(
       `/${this.VARIABLES.USER_ID}_${this.VARIABLES.POST_ID}/reactions`,
+      'GET',
+      params,
       (response) => {
         console.log(response);
         if (response && !response.error) {
-          this.resetReactions();
+          this.isFirstCall = false;
           for (let i = 0; i < response.data.length; i++) {
             const reaction = response.data[i];
             this.reactions[reaction.type] += 1;
@@ -120,11 +134,13 @@ export class AppComponent implements OnInit {
         }
       }
     );
+
+    this.currentTime = new Date().getTime();
   }
 
   getReactionsKeys() {
     if (this.reactions) {
-      return Object.keys(this.reactions)
+      return Object.keys(this.reactions);
     }
   }
 
